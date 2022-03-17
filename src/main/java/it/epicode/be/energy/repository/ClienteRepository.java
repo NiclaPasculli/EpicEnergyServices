@@ -3,6 +3,7 @@ package it.epicode.be.energy.repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -13,6 +14,9 @@ import org.springframework.data.jpa.repository.Query;
 import it.epicode.be.energy.model.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+	
+	List<Cliente> findByIndirizzoSedeLegale(Long id);
+	List<Cliente> findByIndirizzoSedeOperativa(Long id);
 	
 	Page<Optional<Cliente>> findByOrderByRagioneSociale(Pageable pageable);
 	

@@ -91,11 +91,11 @@ public class FatturaController {
 
 	}
 
-	@GetMapping(path = "/fattura/percliente/{cliente}")
+	@GetMapping(path = "/fattura/percliente/{ragioneSociale}")
 	@Operation(description = "cerca lista fatture per cliente")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-	public ResponseEntity<Page<Optional<Fattura>>> findByCliente(Pageable pageable, @PathVariable Cliente cliente) {
-		Page<Optional<Fattura>> findAll = fatturaService.findByCliente(pageable, cliente);
+	public ResponseEntity<Page<Optional<Fattura>>> findByCliente(Pageable pageable, @PathVariable String ragioneSociale) {
+		Page<Optional<Fattura>> findAll = fatturaService.findByCliente(pageable, ragioneSociale);
 
 		if (findAll.hasContent()) {
 			return new ResponseEntity<>(findAll, HttpStatus.OK);
@@ -125,7 +125,7 @@ public class FatturaController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public ResponseEntity<Page<Optional<Fattura>>> findByStatoFattura(Pageable pageable,
 			@PathVariable String statoFattura) {
-		Page<Optional<Fattura>> findAll = fatturaService.findByStatoFattura(pageable, statoFattura);
+		Page<Optional<Fattura>> findAll = fatturaService.findByStatoFatturaNome(pageable, statoFattura);
 
 		if (findAll.hasContent()) {
 			return new ResponseEntity<>(findAll, HttpStatus.OK);

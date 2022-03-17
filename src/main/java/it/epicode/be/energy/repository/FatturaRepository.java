@@ -16,9 +16,9 @@ import it.epicode.be.energy.model.Fattura;
 
 public interface FatturaRepository extends JpaRepository<Fattura, Long> {
 	
-	Page<Optional<Fattura>> findByCliente(Pageable pageable, Cliente cliente);
+	Page<Optional<Fattura>> findByClienteRagioneSociale(Pageable pageable, String ragioneSociale);
 	
-	Page<Optional<Fattura>> findByStatoFattura(Pageable pageable, String statoFattura);
+	Page<Optional<Fattura>> findByStatoFatturaNome(Pageable pageable, String statoFattura);
 	
 	Page<Optional<Fattura>> findByData(Pageable pageable, LocalDate data);
 	

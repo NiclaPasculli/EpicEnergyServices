@@ -60,12 +60,12 @@ public class FatturaService {
 		return fatturaRepo.findById(id);
 	}
 	
-	public Page<Optional<Fattura>> findByCliente(Pageable pageable, Cliente cliente){
-		return fatturaRepo.findByCliente(pageable, cliente);
+	public Page<Optional<Fattura>> findByCliente(Pageable pageable, String ragioneSociale){
+		return fatturaRepo.findByClienteRagioneSociale(pageable, ragioneSociale);
 	}
 	
-	public Page<Optional<Fattura>> findByStatoFattura(Pageable pageable, String statoFattura){
-		return fatturaRepo.findByStatoFattura(pageable, statoFattura);
+	public Page<Optional<Fattura>> findByStatoFatturaNome(Pageable pageable, String statoFattura){
+		return fatturaRepo.findByStatoFatturaNome(pageable, statoFattura);
 	}
 	
 	public Page<Optional<Fattura>> findByData(Pageable pageable, LocalDate data){

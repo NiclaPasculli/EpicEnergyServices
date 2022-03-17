@@ -5,12 +5,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
-import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,11 +23,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.epicode.be.energy.model.Cliente;
-import it.epicode.be.energy.model.Comune;
-import it.epicode.be.energy.model.Indirizzo;
+
 import it.epicode.be.energy.model.Provincia;
-import it.epicode.be.energy.model.TipoCliente;
+
+
 
 
 
@@ -39,8 +39,12 @@ import it.epicode.be.energy.model.TipoCliente;
 public class EpicEnergyControllerTest {
 	
 	
+	
+	
 	@Autowired
 	private MockMvc mockMvc;
+	
+	
 	
 	
 	
@@ -83,7 +87,7 @@ public class EpicEnergyControllerTest {
 	 */
 	
 	@Test
-	public void addNewAutoreWhenUtenteIsAnonymous() throws Exception {
+	public void addNewProvinciaWhenUtenteIsAnonymous() throws Exception {
 		Provincia provincia = new Provincia();
 		provincia.setId(1L);
 		provincia.setNome("Torino");
@@ -95,6 +99,7 @@ public class EpicEnergyControllerTest {
 				.andExpect(status().isUnauthorized()).andReturn();
 
 	}
+	
 	
 	
 	

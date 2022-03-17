@@ -27,11 +27,17 @@
 	
 	
    
- <!--   Stato: <select th:field="*{statoFattura}" name="statoFattura">
+  Stato: <select th:field="*{statoFattura}" name="statoFattura">
 	<option th:each="s : ${listaStatoFatture}"
     th:value="${s.id}"
     th:text="${s.nome}" />
-    </select><br>-->
+    </select><br>
+    
+    Cliente: <select th:field="*{cliente}" name="cliente">
+	<option th:each="c : ${listaClienti}"
+    th:value="${c.id}"
+    th:text="${c.ragioneSociale}" />
+    </select><br>
     
  
     

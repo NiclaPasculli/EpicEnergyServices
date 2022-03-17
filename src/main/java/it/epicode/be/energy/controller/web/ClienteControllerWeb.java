@@ -62,9 +62,9 @@ public class ClienteControllerWeb {
 		log.info("Form aggiorna cliente");
 		Optional<Cliente> cliTemp = clienteService.findById(id);
 		if(cliTemp.isPresent()) {
-			ModelAndView view = new ModelAndView("editComune");
+			ModelAndView view = new ModelAndView("editCliente");
 			view.addObject("cliente",cliTemp.get());
-			view.addObject("listaIndrizzi", indirizzoService.findAll());
+			view.addObject("listaIndirizzi", indirizzoService.findAll());
 			return view;
 		}
 		return new ModelAndView("error").addObject("message", "id non trovato");

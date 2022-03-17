@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -25,7 +26,8 @@ import it.epicode.be.energy.security.util.AuthTokenFilter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	/*@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -84,8 +86,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().sameOrigin().and().csrf().disable().authorizeRequests()
+   protected void configure(HttpSecurity http) throws Exception {
+    	http
+        .csrf().disable()
+        .requestMatchers().antMatchers("/api/**").antMatchers("/auth/**")
+        
+        .and()
+        .authorizeRequests()
+        .antMatchers("/auth/**").permitAll()
+        .anyRequest().authenticated()
+        .and().sessionManagement()
+        
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+       /* http.headers().frameOptions().sameOrigin().and().csrf().disable().authorizeRequests()
             .antMatchers("/auth/**")
             .permitAll()
             .antMatchers("/api/**")
@@ -111,7 +125,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement()
            //.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
 
 }
 }

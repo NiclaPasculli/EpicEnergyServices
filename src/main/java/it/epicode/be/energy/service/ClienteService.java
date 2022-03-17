@@ -51,7 +51,7 @@ public class ClienteService {
 			update.setNomeContatto(cliente.getNomeContatto());
 			update.setEmailContatto(cliente.getEmailContatto());
 			update.setTelefonoContatto(cliente.getTelefonoContatto());
-			update.setFatture(cliente.getFatture());
+			
 			
 			return clienteRepo.save(update);
 		}else {

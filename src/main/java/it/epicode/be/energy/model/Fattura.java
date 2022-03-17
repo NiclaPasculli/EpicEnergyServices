@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -30,6 +32,7 @@ public class Fattura {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String anno;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate data;
 	private BigDecimal importo;
 	private Integer numero;

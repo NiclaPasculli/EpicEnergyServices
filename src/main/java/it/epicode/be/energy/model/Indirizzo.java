@@ -44,9 +44,8 @@ public class Indirizzo {
 	private Comune comune;
 
 
-	@Override
-	public String toString() {
-		return  via +" "+  civico +" "+  localita +" "+ cap +" " + comune ;
+	public String formattaIndirizzo() {
+		return  getVia()+ " "+ getCivico()+" "+ getLocalita()+" "+ getCap()+ " " +getComune().getNome()+" "+ getComune().getProvincia().getNome()+ " " + getComune().getProvincia().getSigla();
 	}
 }
 

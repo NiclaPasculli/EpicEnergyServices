@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import it.epicode.be.energy.model.Cliente;
@@ -27,13 +28,20 @@ public class ProvinciaControllerWeb {
 	ProvinciaService provinciaService;
 	
 	@GetMapping("/mostraelenco")
+    public String mostraElencoComune(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "15") int size, Model model) {
+        model.addAttribute("listaProvince", provinciaService.getPage(pageNumber, size));
+        return "elencoprovince";
+    }
+	
+	/*@GetMapping("/mostraelenco")
 	public ModelAndView mostraElencoProvincia() {
 		log.info("Test elenco province su pagina Thymeleaf");
 		ModelAndView view = new ModelAndView("elencoprovince");
 		view.addObject("listaProvince", provinciaService.findAll());
 		//model.addAttribute("listaStudenti", studenteService.findAll());
 		return view;
-	}
+	}*/
 	
 	@GetMapping("/mostraformaggiungi")
 	public String mostraFormAggiungi(Provincia provincia) {
@@ -77,12 +85,13 @@ public class ProvinciaControllerWeb {
 	}
 
 	@GetMapping("/eliminaprovincia/{id}")
-	public ModelAndView eliminaProvincia(@PathVariable Long id, Model model) {
+	public ModelAndView eliminaProvincia(@PathVariable Long id, @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "15") int size, Model model) {
 		Optional<Provincia> provElim = provinciaService.findById(id);
 		if(provElim.isPresent()) {
 			provinciaService.delete(provElim.get().getId());
 			ModelAndView view = new ModelAndView("elencoprovince");
-			view.addObject("listaProvince", provinciaService.findAll());
+			view.addObject("listaProvince", provinciaService.getPage(pageNumber, size));
 			return view;
 		}else {
 			return new ModelAndView("error").addObject("message", "id non trovato");

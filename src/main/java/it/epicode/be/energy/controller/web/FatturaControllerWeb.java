@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import it.epicode.be.energy.model.Fattura;
 import it.epicode.be.energy.model.Indirizzo;
+import it.epicode.be.energy.service.ClienteService;
 import it.epicode.be.energy.service.FatturaService;
 import it.epicode.be.energy.service.StatoFatturaService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,9 @@ public class FatturaControllerWeb {
 	
 	@Autowired
 	StatoFatturaService statoFatturaService;
+	
+	@Autowired
+	ClienteService clienteService;
 	
 	
 	
@@ -44,6 +48,7 @@ public class FatturaControllerWeb {
 	public String mostraFormAggiungi(Fattura fattura, Model model) {
 		log.info("Form aggiungi fattura");
 		model.addAttribute("listaStatoFatture", statoFatturaService.findAll());
+		model.addAttribute("listaClienti", clienteService.findAll());
 		return "formFattura";
 	}
 
@@ -52,6 +57,7 @@ public class FatturaControllerWeb {
 		log.info("Test aggiungi fattura");
 		if(result.hasErrors()) {
 			model.addAttribute("listaStatoFatture", statoFatturaService.findAll());
+			model.addAttribute("listaClienti", clienteService.findAll());
 			return "formFattura";
 		}
 		fatturaService.save(fattura);
@@ -63,9 +69,10 @@ public class FatturaControllerWeb {
 		log.info("Form aggiorna fattura");
 		Optional<Fattura> fatTemp = fatturaService.findById(id);
 		if(fatTemp.isPresent()) {
-			ModelAndView view = new ModelAndView("editFattura");
+			ModelAndView view = new ModelAndView("editFatture");
 			view.addObject("fattura",fatTemp.get());
 			view.addObject("listaStatoFatture", statoFatturaService.findAll());
+			view.addObject("listaClienti", clienteService.findAll());
 			return view;
 		}
 		return new ModelAndView("error").addObject("message", "id non trovato");

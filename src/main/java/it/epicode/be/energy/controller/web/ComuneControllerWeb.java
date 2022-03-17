@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import it.epicode.be.energy.model.Cliente;
@@ -32,13 +33,21 @@ public class ComuneControllerWeb {
 	ProvinciaService provinciaService;
 	
 	@GetMapping("/mostraelenco")
+    public String mostraElencoComune(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
+        model.addAttribute("listaComuni", comuneService.getPage(pageNumber, size));
+        return "elencocomuni";
+    }
+	
+	
+	/*@GetMapping("/mostraelenco")
 	public ModelAndView mostraElencoComune() {
 		log.info("Test elenco comuni su pagina Thymeleaf");
 		ModelAndView view = new ModelAndView("elencocomuni");
 		view.addObject("listaComuni", comuneService.findAll());
 		
 		return view;
-	}
+	}*/
 	
 	@GetMapping("/mostraformaggiungi")
 	public String mostraFormAggiungi(Comune comune, Model model) {
@@ -84,12 +93,13 @@ public class ComuneControllerWeb {
 	}
 	
 	@GetMapping("/eliminacomune/{id}")
-	public ModelAndView eliminaComune(@PathVariable Long id, Model model) {
+	public ModelAndView eliminaComune(@PathVariable Long id, @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "15") int size, Model model) {
 		Optional<Comune> comElim = comuneService.findById(id);
 		if(comElim.isPresent()) {
 			comuneService.delete(comElim.get().getId());
 			ModelAndView view = new ModelAndView("elencocomuni");
-			view.addObject("listaComuni", comuneService.findAll());
+			model.addAttribute("listaComuni", comuneService.getPage(pageNumber, size));
 			return view;
 		}else {
 			return new ModelAndView("error").addObject("message", "id non trovato");

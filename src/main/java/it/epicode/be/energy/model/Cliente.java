@@ -59,13 +59,13 @@ public class Cliente {
 	
 	
 	
-	@OneToMany(cascade = CascadeType.REMOVE)//(mappedBy = "cliente")
+	/*@OneToMany(mappedBy = "cliente")// cascade = CascadeType.REMOVE)//(mappedBy = "cliente")
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-	private List<Fattura> fatture;
+	private List<Fattura> fatture;*/
 	
-	public String formattaIndirizzo() {
+	/*public String formattaIndirizzo() {
 		return indirizzoSedeLegale.getLocalita()+"-"+indirizzoSedeLegale.getVia();
-	}
+	}*/
 
 	
 	

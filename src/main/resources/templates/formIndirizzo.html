@@ -28,6 +28,7 @@
 	
    
   Comune: <select th:field="*{comune}" name="comune">
+   <option selected value=""> -- select an option -- </option>
 	<option th:each="c : ${listaComuni}"
     th:value="${c.id}"
     th:text="${c.nome}" />

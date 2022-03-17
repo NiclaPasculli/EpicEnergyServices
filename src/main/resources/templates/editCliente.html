@@ -66,16 +66,16 @@
 	
 
    
-  Indirizzo Sede Legale: <select th:field="*{indirizzoSedeLegale}" name="indirizzo">
+   Indirizzo Sede Legale: <select th:field="*{indirizzoSedeLegale}" name="indirizzo">
 	<option th:each="i : ${listaIndirizzi}"
     th:value="${i.id}"
-    th:text="${i.id}" />
+    th:text="${i.formattaIndirizzo()}" />
     </select><br>
     
     Indirizzo Sede Operativa: <select th:field="*{indirizzoSedeOperativa}" name="indirizzo">
 	<option th:each="i : ${listaIndirizzi}"
     th:value="${i.id}"
-    th:text="${i.id}" />
+    th:text="${i.formattaIndirizzo()}" />
     </select><br>
     
 	

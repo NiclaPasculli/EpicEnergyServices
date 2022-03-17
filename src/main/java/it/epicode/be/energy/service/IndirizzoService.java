@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import it.epicode.be.energy.model.Cliente;
 import it.epicode.be.energy.model.Indirizzo;
+import it.epicode.be.energy.repository.ClienteRepository;
 import it.epicode.be.energy.repository.IndirizzoRepository;
 import it.epicode.be.energy.security.exceptions.EpicEnergyException;
 
@@ -18,12 +20,26 @@ public class IndirizzoService {
 	@Autowired
 	IndirizzoRepository indirizzoRepo;
 	
+	@Autowired
+	ClienteRepository clienteRepo;
+	
 	public Indirizzo save(Indirizzo indirizzo) {
 		indirizzoRepo.save(indirizzo);
 		return indirizzo;
 	}
 
 	public void delete(Long id) {
+		Indirizzo i = indirizzoRepo.findById(id).get();
+		List<Cliente> listaClienti = clienteRepo.findByIndirizzoSedeLegale(id);
+		for(Cliente c : listaClienti) {
+			c.setIndirizzoSedeLegale(null);
+			clienteRepo.save(c);
+		}
+		List<Cliente> listaClienti1 = clienteRepo.findByIndirizzoSedeOperativa(id);
+		for(Cliente c : listaClienti1) {
+			c.setIndirizzoSedeOperativa(null);
+			clienteRepo.save(c);
+		}
 		indirizzoRepo.deleteById(id);
 	}
 
