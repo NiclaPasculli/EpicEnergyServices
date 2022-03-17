@@ -1,5 +1,6 @@
 package it.epicode.be.energy;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +30,9 @@ import it.epicode.be.energy.model.Comune;
 import it.epicode.be.energy.model.Indirizzo;
 import it.epicode.be.energy.model.Provincia;
 import it.epicode.be.energy.model.TipoCliente;
+import it.epicode.be.energy.repository.ComuneRepository;
+import it.epicode.be.energy.repository.IndirizzoRepository;
+import it.epicode.be.energy.repository.ProvinciaRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -45,6 +49,15 @@ public class EpicEnergyControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@Autowired
+	ProvinciaRepository provinciaRepo;
+
+	@Autowired
+	ComuneRepository comuneRepo;
+
+	@Autowired
+	IndirizzoRepository indirizzoRepo;
+
 	/**
 	 * EndPoint di viasualizzazione lista dei clienti testato senza autentificazione
 	 * 
@@ -52,7 +65,7 @@ public class EpicEnergyControllerTest {
 	@Test
 	@WithAnonymousUser
 	public void listaClientiWhenUtenteIsAnonymous() throws Exception {
-		this.mockMvc.perform(get("/api/cliente")).andExpect(status().isUnauthorized());
+		this.mockMvc.perform(get("/api/cliente")).andExpect(status().isForbidden());
 	}
 
 	/**
@@ -62,11 +75,11 @@ public class EpicEnergyControllerTest {
 	@Test
 	@WithAnonymousUser
 	public void listaComuniWhenUtenteIsAnonymous() throws Exception {
-		this.mockMvc.perform(get("/api/comune")).andExpect(status().isUnauthorized());
+		this.mockMvc.perform(get("/api/comune")).andExpect(status().isForbidden());
 	}
 
 	/**
-	 * EndPoint di viasualizzazione lista dei comuni testato con autentificazione
+	 * EndPoint di visualizzazione lista dei comuni testato con autentificazione
 	 * 
 	 */
 	@Test
@@ -76,25 +89,46 @@ public class EpicEnergyControllerTest {
 	}
 
 	/**
-	 * EndPoint di aggiunta nuovo autore testato con autentificazione
+	 * EndPoint di aggiunta nuovo provincia testato con autentificazione
 	 * 
 	 */
 
 	@Test
-	public void addNewProvinciaWhenUtenteIsAnonymous() throws Exception {
-		Provincia provincia = new Provincia();
-		provincia.setId(1L);
-		provincia.setNome("Torino");
-		provincia.setRegione("Piemonte");
-		provincia.setSigla("To");
+	@WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
+	public void addNewProvincia() throws Exception {
+
 		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(provincia);
-		MvcResult result = mockMvc.perform(post("/api/provincia").contentType(MediaType.APPLICATION_JSON).content(json))
-				.andExpect(status().isUnauthorized()).andReturn();
+		String json = objectMapper.writeValueAsString(pro1);
+		String json1 = objectMapper.writeValueAsString(pro2);
+		MvcResult result = mockMvc
+				.perform(post("/api/provincia").contentType(MediaType.APPLICATION_JSON).content(json).content(json1))
+				.andExpect(status().isOk()).andReturn();
 
 	}
 
-	/*@Test
+	/**
+	 * EndPoint di aggiunta nuovo comune testato con autentificazione
+	 * 
+	 */
+
+	@Test
+	@WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
+	public void addNewComune() throws Exception {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(com1);
+		String json1 = objectMapper.writeValueAsString(com2);
+		MvcResult result = mockMvc
+				.perform(post("/api/comune").contentType(MediaType.APPLICATION_JSON).content(json).content(json1))
+				.andExpect(status().isOk()).andReturn();
+
+	}
+
+	/**
+	 * EndPoint di aggiunta nuovo cliente testato con autentificazione
+	 * 
+	 */
+	@Test
 	@WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
 	public void addNewCliente() throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -124,6 +158,9 @@ public class EpicEnergyControllerTest {
 		pro2.setSigla("TR");
 		pro2.setRegione("Puglia");
 
+		provinciaRepo.save(pro1);
+		provinciaRepo.save(pro2);
+
 		com1 = new Comune();
 		com1.setNome("Spinazzola");
 		com1.setProvincia(pro1);
@@ -131,6 +168,9 @@ public class EpicEnergyControllerTest {
 		com2 = new Comune();
 		com2.setNome("Spino");
 		com2.setProvincia(pro2);
+
+		comuneRepo.save(com1);
+		comuneRepo.save(com2);
 
 		ileg = new Indirizzo();
 		ileg.setVia("Via le noci");
@@ -146,15 +186,17 @@ public class EpicEnergyControllerTest {
 		iope.setLocalita("grotte");
 		iope.setComune(com2);
 
-		
+		indirizzoRepo.save(ileg);
+		indirizzoRepo.save(iope);
+
 		cl1 = new Cliente();
 		cl1.setRagioneSociale("Test");
 		cl1.setTipoCliente(TipoCliente.PA);
 		cl1.setPartitaIva("02412630465");
 		cl1.setEmail("test@test.it");
 		cl1.setPec("test@pec.it");
-		//cl1.setDataInserimento(LocalDate.parse("2020-12-12"));
-		//cl1.setDataUltimoContatto(LocalDate.parse("2021-12-12"));
+		// cl1.setDataInserimento(LocalDate.parse("2020-12-12"));
+		// cl1.setDataUltimoContatto(LocalDate.parse("2021-12-12"));
 		BigDecimal fattAnn = new BigDecimal(455667788);
 		cl1.setFatturatoAnnuale(fattAnn);
 		cl1.setTelefono("34567897");
@@ -165,6 +207,6 @@ public class EpicEnergyControllerTest {
 		cl1.setIndirizzoSedeLegale(ileg);
 		cl1.setIndirizzoSedeOperativa(iope);
 
-	}*/
+	}
 
 }
