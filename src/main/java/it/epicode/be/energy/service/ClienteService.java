@@ -12,7 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import it.epicode.be.energy.model.Cliente;
+import it.epicode.be.energy.model.Fattura;
+import it.epicode.be.energy.model.Indirizzo;
 import it.epicode.be.energy.repository.ClienteRepository;
+import it.epicode.be.energy.repository.FatturaRepository;
+import it.epicode.be.energy.repository.IndirizzoRepository;
 import it.epicode.be.energy.security.exceptions.EpicEnergyException;
 
 
@@ -22,6 +26,10 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository clienteRepo;
+	
+	
+	@Autowired
+	private FatturaRepository fatturaRepo;
 
 	public Cliente save(Cliente cliente) {
 		clienteRepo.save(cliente);
@@ -29,7 +37,13 @@ public class ClienteService {
 	}
 
 	public void delete(Long id) {
-		clienteRepo.deleteById(id);
+		  Cliente delete = clienteRepo.findById(id).get();            
+		  List<Fattura> fatture = fatturaRepo.findByClienteId(id);        
+		  for(Fattura f : fatture) {            
+			  fatturaRepo.delete(f);     
+			  }                      
+		  clienteRepo.deleteById(id); 
+		
 	}
 
 	public Cliente update(Long id, Cliente cliente) {

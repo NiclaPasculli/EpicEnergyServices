@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -31,10 +33,13 @@ public class Fattura {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@NotEmpty(message = "specificare l'anno")
 	private String anno;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate data;
+	@NotNull
 	private BigDecimal importo;
+	@NotNull
 	private Integer numero;
 	
 	@ManyToOne

@@ -50,8 +50,8 @@
                <td th:text="${cliente.nomeContatto}"></td>
                <td th:text="${cliente.cognomeContatto}"></td>
                <td th:text="${cliente.telefonoContatto}"></td>
-               <td th:text="${cliente.indirizzoSedeLegale.formattaIndirizzo}"></td>
-               <td th:text="${cliente.indirizzoSedeOperativa.formattaIndirizzo}"></td>
+               <td th:if="${cliente.indirizzoSedeLegale != null}" th:text="${cliente.indirizzoSedeLegale.formattaIndirizzo}"></td>
+               <td th:if="${cliente.indirizzoSedeOperativa != null}" th:text="${cliente.indirizzoSedeOperativa.formattaIndirizzo}"></td>
                <td><a th:href="@{/clienti/mostraformaggiorna/{id}(id=${cliente.id})}">Aggiorna</i></a></td>
                <td><a th:href="@{/clienti/eliminacliente/{id}(id=${cliente.id})}">Elimina</i></a></td>
             </tr>

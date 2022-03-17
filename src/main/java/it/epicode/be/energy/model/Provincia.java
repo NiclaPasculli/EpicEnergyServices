@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -27,8 +28,11 @@ public class Provincia {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@NotEmpty(message = "specificare il nome")
 	private String nome;
+	@NotEmpty(message = "specificare la sigla")
 	private String sigla;
+	@NotEmpty(message = "specificare la regione")
 	private String regione;
 	
 	

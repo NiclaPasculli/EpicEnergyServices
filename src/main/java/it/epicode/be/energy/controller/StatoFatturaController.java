@@ -32,7 +32,7 @@ public class StatoFatturaController {
 	StatoFatturaService statoFatturaService;
 
 	@GetMapping(path = "/statofattura")
-	@Operation(description = "visualizza lista di stati delle fatture")
+	@Operation(description = "visualizza lista stati delle fatture")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public ResponseEntity<Page<StatoFattura>> findAll(Pageable pageable) {
 		Page<StatoFattura> findAll = statoFatturaService.findAll(pageable);
