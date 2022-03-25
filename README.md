@@ -22,7 +22,12 @@ Per popolare in db in modo corretto occorre eseguire le seguenti chiamate nell' 
 -Salvare cliente
 -Salvare Fattura
 
+
 Alcuni esempi e immagini della funzionalità dell'app
+Aggiornare token su collezione Postman e swagger effettuando login con:
+Username: admin Password: admin (abilitato a tutte le operazioni)
+Username: user Password: user (abilitato solo alle operazioni di lettura)
+Per la parte web inserire username e password.
 
 SWAGGER:
 Url: http://localhost:8080/swagger-ui.html
